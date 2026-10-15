@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime      @default(now())
+  authSessions AuthSession[]
+  whatsapp     WaSession?
+  secrets      Secret[]
+  statuses     Status[]
+  media        Media[]
+  jobs         DownloadJob[]
+  activities   Activity[]
+  preferences  Preference?
+  commands     Command[]
+  adminAccess  AdminAccess?
+}
+
+model AuthSession {
+  id          String   @id
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt   DateTime
+  authVersion String?
+
+  @@index([expiresAt])
+}
+
+model AdminAccess {
+  credentialVersion String
+  id                String   @id
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+}
+
+model WaSession {
+  userId             String    @id
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  state              String    @default("DISCONNECTED")
+  desired            Boolean   @default(false)
+  generation         Int       @default(0)
+  lastConnectedAt    DateTime?
+  lastError          String?
+  challengeCipher    String?
+  challengeExpiresAt DateTime?
+  updatedAt          DateTime  @updatedAt
+}
+
+model Secret {
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  key    String
+  cipher String
+
+  @@id([userId, key])
+}
+
+model Status {
+  id               String        @id @default(uuid())
+  userId           String
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fingerprint      String
+  contactName      String
+  kind             String
+  mime             String
+  duration         Int?
+  postedAt         DateTime
+  expiresAt        DateTime
+  descriptorCipher String?
+  thumbnail        Bytes?
+  media            Media?
+  jobs             DownloadJob[]
+  createdAt        DateTime      @default(now())
+
+  @@unique([userId, fingerprint])
+  @@index([userId, postedAt])
+}
+
+model Media {
+  id                String    @id @default(uuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  statusId          String?   @unique
+  status            Status?   @relation(fields: [statusId], references: [id], onDelete: SetNull)
+  filename          String
+  contactName       String
+  kind              String
+  mime              String
+  bytes             Int
+  duration          Int?
+  storageKey        String
+  sha256            String
+  createdAt         DateTime  @default(now())
+  deleteRequestedAt DateTime?
+
+  @@index([userId, createdAt])
+}
+
+model DownloadJob {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  statusId    String?   @unique
+  status      Status?   @relation(fields: [statusId], references: [id], onDelete: SetNull)
+  state       String    @default("WAITING")
+  contactName String
+  kind        String
+  attempts    Int       @default(0)
+  errorCode   String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  finishedAt  DateTime?
+
+  @@index([state, createdAt])
+  @@index([userId, createdAt])
+}
+
+model Activity {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model Preference {
+  userId        String  @id
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  retentionDays Int     @default(7)
+  notifications Boolean @default(true)
+}
+
+model Command {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind          String
+  generation    Int
+  payloadCipher String?
+  state         String   @default("WAITING")
+  createdAt     DateTime @default(now())
+
+  @@index([state, createdAt])
+}
+
+model WorkerHealth {
+  id           String   @id
+  heartbeat    DateTime @default(now())
+  storageReady Boolean  @default(false)
+  provider     String
+}
+
+model RateBucket {
+  key       String   @id
+  count     Int
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}

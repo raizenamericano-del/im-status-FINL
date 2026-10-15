@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}
+      DATA_DIR: /data/im-status-local
+      APP_ORIGIN: http://localhost:3000
+      COOKIE_SECURE: 'false'
+      PORT: 3000
+    ports: ['3000:3000']
+    volumes: ['data:/data']
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          CMD,
+          node,
+          -e,
+          "fetch('http://localhost:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+volumes:
+  data:

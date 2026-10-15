@@ -1,0 +1,81 @@
+{
+  "scenariosPassed": 16,
+  "provider": "isolated mock only; no real account",
+  "widths": [
+    360,
+    390,
+    1440
+  ],
+  "consoleErrors": [],
+  "accessibility": [
+    {
+      "page": "landing-desktop",
+      "violations": []
+    },
+    {
+      "page": "landing-mobile",
+      "violations": []
+    },
+    {
+      "page": "admin-login-mobile",
+      "violations": []
+    },
+    {
+      "page": "dashboard-mobile",
+      "violations": []
+    },
+    {
+      "page": "dashboard-desktop",
+      "violations": []
+    },
+    {
+      "page": "statuses-desktop",
+      "violations": []
+    },
+    {
+      "page": "library-desktop",
+      "violations": []
+    },
+    {
+      "page": "history-desktop",
+      "violations": []
+    },
+    {
+      "page": "activity-desktop",
+      "violations": []
+    },
+    {
+      "page": "settings-desktop",
+      "violations": []
+    },
+    {
+      "page": "connect-desktop",
+      "violations": []
+    },
+    {
+      "page": "statuses-mobile",
+      "violations": []
+    },
+    {
+      "page": "library-mobile",
+      "violations": []
+    },
+    {
+      "page": "connect-mobile",
+      "violations": []
+    },
+    {
+      "page": "settings-mobile",
+      "violations": []
+    },
+    {
+      "page": "history-mobile",
+      "violations": []
+    },
+    {
+      "page": "login-mobile",
+      "violations": []
+    }
+  ],
+  "at": "2026-10-15T11:50:47.628Z"
+}

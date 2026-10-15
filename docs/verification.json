@@ -1,0 +1,52 @@
+{
+  "project": "IM Status Hub SQLite Local",
+  "version": "2.0.0",
+  "verifiedAt": "2026-10-15T11:49:53.807Z",
+  "node": "22.23.3",
+  "database": "SQLite, Prisma 6.19.3, WAL",
+  "cleanNpmCi": "passed",
+  "formatCheck": "passed",
+  "typescriptStrict": "passed",
+  "eslint": "passed",
+  "productionBuild": "passed",
+  "unit": {
+    "passed": 95,
+    "files": 7
+  },
+  "integration": {
+    "passed": 25,
+    "storage": "real isolated SQLite file",
+    "provider": "explicit test-only mock",
+    "crossProcessWrites": 60
+  },
+  "startup": {
+    "database": "SQLite WAL on isolated local directory",
+    "automaticMigration": "passed",
+    "noPostgresConnection": "passed",
+    "noDefaultAdminPassword": "passed",
+    "realUnpairedWorkerAndWebStart": "passed",
+    "secondInstanceRejected": "passed",
+    "restartPreservesOwnerCookieKeysAndMediaBytes": "passed",
+    "workerCrashStopsWeb": "passed",
+    "mismatchedOrMissingKeysFailClosed": "passed",
+    "liveWhatsApp": "not tested",
+    "railwayVolume": "not tested"
+  },
+  "browser": {
+    "passed": 16,
+    "widths": [360, 390, 1440],
+    "pageErrors": 0
+  },
+  "axe": {
+    "audits": 17,
+    "violations": 0
+  },
+  "npmAuditVulnerabilities": 0,
+  "liveWhatsAppPairing": "not tested",
+  "liveWhatsAppStatusMedia": "not tested",
+  "liveWhatsAppRestartResumption": "not tested",
+  "dockerComposeBuildRun": "not executed",
+  "githubActionsAndPush": "not performed",
+  "railwayDeploymentVolumePersistence": "not performed",
+  "legacyPostgreSQLDataImport": "not implemented; original deployment data not modified"
+}

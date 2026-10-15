@@ -1,0 +1,15 @@
+node_modules/
+.next/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+runtime/
+test-results/
+playwright-report/
+*.log
+coverage/
+
+*.sqlite
+*.sqlite-*
+server-secrets.json

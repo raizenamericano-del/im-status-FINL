@@ -1,0 +1,7 @@
+{
+  "passed": 25,
+  "database": "SQLite (isolated disposable file)",
+  "provider": "mock, no live account",
+  "authRestart": "two child processes; encrypted state/Signal keys round-trip verified",
+  "at": "2026-10-15T11:49:53.807Z"
+}

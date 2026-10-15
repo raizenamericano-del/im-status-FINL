@@ -1,0 +1,36 @@
+# Troubleshooting — SQLite v2
+
+| Gejala / code                                   | Tindakan                                                                                                                                                                                                      |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Masih muncul P1001/PostgreSQL                   | Pastikan source benar-benar v2.0.0, Start Command `npm start`, dan custom pre-deploy lama dikosongkan. Entrypoint v2 mengabaikan DATABASE_URL PostgreSQL; jangan mencoba menggantinya dengan localhost        |
+| DATA_VOLUME_REQUIRED                            | Pasang volume sungguhan pada service aplikasi di `/data`. DATA_DIR image default `/data/im-status-local`. Variabel path saja tidak membuat volume                                                             |
+| DATA_DIRECTORY_UNAVAILABLE / LOCAL_SETUP_FAILED | Periksa izin tulis, kapasitas disk dan mount. Docker entrypoint mengatur owner node. Jangan hapus DB/key sebagai perbaikan                                                                                    |
+| INSTANCE_BUSY                                   | Instance lain memakai data yang sama. Hentikan deployment lama, jalankan satu replica. Jangan paksa dua worker atau menghapus lock untuk bypass                                                               |
+| KEY_FILE_MISSING                                | Restore server-secrets.json asli dari backup, atau sediakan ENCRYPTION_KEY asli bila memang memulihkan. Jangan membuat key baru untuk ciphertext lama                                                         |
+| KEY_FILE_INVALID / KEY_CONFIG_MISMATCH          | File key/format/env tidak sesuai. Pertahankan key asli; jangan regenerasi atau menyalin key dari deployment berbeda. Jika env salah, koreksi ke nilai tersimpan secara privat                                 |
+| MIGRATION_FAILED / P1008                        | Hentikan proses lain yang membuka file SQLite, periksa disk/izin. Jangan campur migration v1 PostgreSQL dengan v2 SQLite. Jangan db push/reset                                                                |
+| ADMIN_SETUP_REQUIRED                            | Isi ADMIN_PASSWORD 12–128 karakter pada service aplikasi, redeploy. Tidak ada password bawaan/email/pendaftaran                                                                                               |
+| INVALID_CREDENTIALS                             | Pakai password admin dari environment deployment aktif, bukan password email/WhatsApp                                                                                                                         |
+| APP_ORIGIN_REQUIRED                             | Buat public domain service, redeploy; RAILWAY_PUBLIC_DOMAIN dibaca otomatis. Untuk custom domain isi APP_ORIGIN                                                                                               |
+| INVALID_APP_ORIGIN / FORBIDDEN                  | APP_ORIGIN harus exact HTTPS origin, tanpa `/login`, `/hub`, slash akhir atau URL dashboard platform. Boleh beberapa origin dipisah koma. Hapus override lama yang salah bila memakai domain Railway otomatis |
+| Login kembali ke halaman login                  | HTTPS publik + COOKIE_SECURE=true. HTTP localhost perlu false. Browser iframe/third-party cookie restrictions dapat menghalangi; buka domain app langsung                                                     |
+| RATE_LIMITED                                    | Tunggu lima menit setelah percobaan login berlebihan; jangan matikan rate limit                                                                                                                               |
+| SERVICE_EXITED / worker_start_failed            | Supervisor menghentikan keduanya jika salah satu mati. Periksa disk/key/FFmpeg, lalu restart seluruh service. Worker tidak perlu service kedua                                                                |
+| Worker offline / storage error                  | Periksa volume writable, disk, proses startup. Heartbeat >20 detik dianggap offline. Worker memerlukan FFmpeg/ffprobe dan koneksi outbound provider                                                           |
+| QR/code tidak muncul                            | Pastikan ENABLE_WHATSAPP=true, consent benar, nomor internasional, outbound network tersedia. Tunggu sampai provider memberi challenge; challenge belum berarti Connected                                     |
+| Protocol issue / 428 / session replaced         | Provider unofficial dapat berubah; review sumber/release. Jangan membuat token palsu atau mencoba akun tanpa izin; owner dapat relink                                                                         |
+| Connected tetapi Status kosong                  | Menunggu notify Status baru yang tersedia untuk akun; privacy/kontak/provider menentukan. Tidak ada all-Status/backfill; refresh hanya baca DB                                                                |
+| DOWNLOAD_TIMEOUT / MEDIA_UNAVAILABLE            | Status/media dapat kedaluwarsa atau network terganggu; retry saat masih tersedia. Deadline 45 detik, batas 64 MiB                                                                                             |
+| UNSUPPORTED_MEDIA / SSRF_BLOCKED                | Format/destination tidak diizinkan; jangan menonaktifkan validasi. Periksa perubahan provider dan FFmpeg                                                                                                      |
+| Video tidak terputar                            | Codec asli mungkin tidak didukung browser; uji download. Tidak ada transcode otomatis                                                                                                                         |
+| File hilang setelah redeploy                    | Periksa volume sama dan DATA_DIR sama. Restore folder DB/key/media utuh; disk ephemeral tidak bisa dijadikan persisten hanya dengan env                                                                       |
+| Data v1 tidak muncul                            | v2 memakai database baru. PostgreSQL lama tidak diimpor atau dihapus; jangan menghapus data/key v1                                                                                                            |
+| Disconnect saat worker mati                     | Cabut perangkat secara langsung di WhatsApp; remote logout tidak dijamin                                                                                                                                      |
+
+## Uji live owner
+
+Tautkan akun sendiri/berizin, terima foto/video baru yang boleh disimpan, cek preview/download bytes dan library. Restart service dengan volume yang sama, verifikasi file dan apakah WhatsApp benar-benar reconnect. Disconnect dan periksa perangkat dari ponsel. Hasil mock/local bukan bukti live WhatsApp atau volume Railway.
+
+## Diagnosis aman
+
+Kirim code error dan screenshot status service/volume dengan rahasia ditutup. Jangan kirim ADMIN_PASSWORD, ENCRYPTION_KEY, server-secrets.json, DB dump, OTP/QR/code atau connection string.

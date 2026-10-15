@@ -1,0 +1,9 @@
+node_modules
+.next
+runtime
+package-lock.json
+public/fonts/OFL.txt
+prisma/migrations
+next-env.d.ts
+
+docs/*-result.json

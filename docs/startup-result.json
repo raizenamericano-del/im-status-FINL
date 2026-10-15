@@ -1,0 +1,13 @@
+{
+  "database": "SQLite WAL on isolated local directory",
+  "automaticMigration": "passed",
+  "noPostgresConnection": "passed",
+  "noDefaultAdminPassword": "passed",
+  "realUnpairedWorkerAndWebStart": "passed",
+  "secondInstanceRejected": "passed",
+  "restartPreservesOwnerCookieKeysAndMediaBytes": "passed",
+  "workerCrashStopsWeb": "passed",
+  "mismatchedOrMissingKeysFailClosed": "passed",
+  "liveWhatsApp": "not tested",
+  "railwayVolume": "not tested"
+}

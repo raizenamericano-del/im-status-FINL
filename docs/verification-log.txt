@@ -1,0 +1,168 @@
+
+added 313 packages, and audited 314 packages in 14s
+
+84 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+> im-status-hub@2.0.0 verify
+> node scripts/verify.mjs
+
+
+> im-status-hub@2.0.0 db:generate
+> prisma generate
+
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 150ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+
+> im-status-hub@2.0.0 format:check
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> im-status-hub@2.0.0 typecheck
+> tsc --noEmit
+
+
+> im-status-hub@2.0.0 lint
+> eslint .
+
+
+> im-status-hub@2.0.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /home/user/im-status-hub-local
+
+ ✓ tests/security.test.ts (49 tests) 190ms
+ ✓ tests/storage.test.ts (8 tests) 656ms
+     ✓ measures the real video duration using ffprobe  375ms
+ ✓ tests/provider.test.ts (7 tests) 6ms
+ ✓ tests/local-config.test.mjs (4 tests) 21ms
+ ✓ tests/server-errors.test.ts (16 tests) 7ms
+ ✓ tests/admin-config.test.ts (8 tests) 7ms
+ ✓ tests/privacy.test.ts (3 tests) 4ms
+
+ Test Files  7 passed (7)
+      Tests  95 passed (95)
+   Start at  11:49:44
+   Duration  2.58s (transform 168ms, setup 0ms, import 916ms, tests 891ms, environment 1ms)
+
+
+> im-status-hub@2.0.0 db:migrate
+> prisma migrate deploy
+
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": SQLite database "verification_test.sqlite" at "file:/home/user/im-status-hub-local/runtime/verification_test.sqlite?connection_limit=1&socket_timeout=15"
+
+1 migration found in prisma/migrations
+
+
+No pending migrations to apply.
+
+> im-status-hub@2.0.0 test:integration
+> tsx tests/integration.ts
+
+PASS password-only login atomically bootstraps one dedicated admin; registration is disabled
+PASS missing admin setup fails closed without leaking credentials
+PASS legacy sessions are denied and the admin cannot read another user resources
+PASS health is public; all personal endpoints require authentication
+{"event":"api_error","code":"DATABASE_NOT_READY"}
+{"event":"api_error","code":"DATABASE_NOT_READY"}
+PASS missing schema returns a specific safe error for readiness and admin login
+{"event":"api_error","code":"DATABASE_NOT_READY"}
+{"event":"api_error","code":"DATABASE_NOT_READY"}
+PASS admin table readiness errors are safe and recover after schema restoration
+PASS CSRF, origin and consent are enforced
+PASS pairing challenge does not mean connected; only provider open does
+PASS auth credentials survive a real child-process restart encrypted
+PASS deduplicated status ingestion persists only owner-scoped metadata
+PASS download jobs deduplicate concurrent requests and complete after actual file bytes exist
+PASS HTTP file service streams exact bytes, ranges and safe filenames; rejects foreign owners
+PASS search, filters and library counts use actual persisted records
+PASS SSE emits only authenticated owner updates without challenges or session secrets
+PASS confirmed deletion hides media immediately and physically removes bytes during cleanup
+PASS provider error and timeout become durable failed jobs; retry is safe
+PASS automatic retention removes old media and expired descriptors
+PASS disconnect revokes secrets and generation-fences stale credential/event callbacks
+PASS offline worker prevents connecting; disabled provider is explicit
+PASS rate limits are persistent and atomic across concurrent requests
+PASS malformed media identifiers and user URL injection cannot cause arbitrary fetches
+PASS admin password is server-managed; rotation invalidates old sessions and logout revokes cookie
+PASS public error responses do not expose stack traces or internal credentials
+PASS SQLite serializes read-modify-write transactions across separate processes
+PASS admin login enforces its persistent ten-attempt limit
+
+25 integration scenarios passed. No real WhatsApp account used.
+
+> im-status-hub@2.0.0 build
+> next build --webpack
+
+▲ Next.js 16.4.1 (webpack)
+✓ Running next.config.mjs took 13ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.2s
+  Running TypeScript ...
+  Finished TypeScript in 2.8s ...
+  Collecting page data using 1 worker ...
+  Generating static pages using 1 worker (0/5) ...
+  Generating static pages using 1 worker (1/5) 
+  Generating static pages using 1 worker (2/5) 
+  Generating static pages using 1 worker (3/5) 
+✓ Generating static pages using 1 worker (5/5) in 257ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/[...path]
+├ ƒ /hub/[[...section]]
+├ ○ /icon.svg
+└ ○ /login
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+PASS local startup: SQLite WAL, automatic migration, private stable keys, one-instance lock, real unpaired worker + web, restart persistence, crash supervision, safe failure
+TEST_ONLY_WORKER_READY
+▲ Next.js 16.4.1
+- Local:         http://localhost:3300
+- Network:       http://0.0.0.0:3300
+✓ Ready in 112ms
+✓ Running next.config.mjs took 24ms
+
+> im-status-hub@2.0.0 test:browser
+> node tests/browser.mjs
+
+PASS landing navigation, local assets and responsive layout
+PASS admin setup readiness failure blocks login and retry recovers
+PASS password-only admin login, secure cookie and authenticated empty dashboard
+PASS desktop empty pages, filters and navigation
+PASS preferences persist and admin password settings are server-managed
+PASS preferences recover from a real HTTP error using the retry control
+PASS consent gate and QR generation are not represented as Connected
+PASS mock provider confirmation and SSE deliver actual persisted test events
+PASS status search and photo/video filters are functional
+PASS photo preparation, library save, original-byte download and modal toast
+PASS video decoding, playback controls and range seeking
+PASS library grid/list, filename search, sort and confirmed delete
+PASS download history and activity reflect real test jobs
+PASS mobile menu, dialogs and narrow-screen routes have no overflow
+PASS disconnect requires confirmation and clears local session
+PASS logout invalidates authentication and protects resource APIs
+
+16 browser scenarios passed; 17 accessibility audits clean.
+found 0 vulnerabilities
+Verification completed; no live WhatsApp account was used.

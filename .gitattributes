@@ -1,0 +1,5 @@
+* text=auto eol=lf
+# Prisma generates a trailing blank line; keep applied migration bytes/checksum unchanged.
+prisma/migrations/**/migration.sql whitespace=-blank-at-eof
+*.png binary
+*.ttf binary

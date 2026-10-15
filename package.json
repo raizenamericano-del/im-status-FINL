@@ -1,0 +1,61 @@
+{
+  "name": "im-status-hub",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "node scripts/start.mjs --dev",
+    "build": "next build --webpack",
+    "start": "node scripts/start.mjs",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:integration": "tsx tests/integration.ts",
+    "test:browser": "node tests/browser.mjs",
+    "setup": "node scripts/setup.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.3",
+    "@whiskeysockets/baileys": "7.0.0-rc14",
+    "dotenv": "18.0.8",
+    "ipaddr.js": "2.5.0",
+    "lucide-react": "1.57.0",
+    "next": "16.4.1",
+    "pino": "9.14.0",
+    "prisma": "6.19.3",
+    "qrcode.react": "4.2.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "tsx": "4.23.15",
+    "undici": "6.29.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.1",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "20.19.43",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "10.12.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.13.0",
+    "prettier": "3.9.10",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.2",
+    "vitest": "4.1.11"
+  },
+  "overrides": {
+    "deepmerge-ts": "8.0.0"
+  }
+}
